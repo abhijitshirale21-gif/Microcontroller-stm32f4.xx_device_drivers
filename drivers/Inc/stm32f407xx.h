@@ -147,10 +147,21 @@ typedef struct
 	__vo uint32_t DCKCFGR2;                           /*TODO,           Addresses Offset: 0X94*/
 
 
-
-
 }RCC_RegeDef_t;
 
+/*
+ * peripheral register defination structure for EXTI
+ *
+ */
+typedef struct
+{
+	__vo uint32_t IMR;               /*! < GPIO port mode Register,   Address offset:0x00*/
+	__vo uint32_t EMR;               /*! < ToDo,                      Address offset:0xo4*/
+	__vo uint32_t RTSR;              /*! < ToDo,                      Address offset:0xo8*/
+	__vo uint32_t FTSR;              /*! < ToDo,                      Address offset:0xoc*/
+	__vo uint32_t SWIER;             /*! < ToDo,                      Address offset:0x10*/
+	__vo uint32_t PR;                /*! < ToDo,                      Address offset:0x14*/
+}EXTI_RegDef_t;
 
 /* Peripheral Definitions   (Peripheral base addresses typecasted to xxx_Regdef_t)
  *
@@ -166,6 +177,8 @@ typedef struct
 #define GPIOI							((GPIO_RegDef_t*)GPIOI_BASEADDR)
 
 #define RCC                             ((RCC_RegeDef_t*)RCC_BASEADDR)
+
+#define EXTI                            ((EXTI_RegeDef_t*)EXTI_BASEADDR)
 
 
 

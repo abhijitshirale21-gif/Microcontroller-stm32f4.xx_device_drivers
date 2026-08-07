@@ -140,6 +140,36 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 	else
 	{
 	//this part will code later (interrupt)
+		if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode ==GPIO_MODE_IT_FT)
+		{
+			//Configure the FTSR
+			EXT1->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
+			//clear the corrosponding RTSR bit
+			EXIT1->RTSR &= ~(1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+
+		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode ==GPIO_MODE_IT_RT_)
+		{
+			//1Configure the RTSR
+			EXT1->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
+			//clear the corrosponding RTSR bit
+			EXIT1->RTSR &= ~(1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+
+		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode ==GPIO_MODE_IT_RFT_)
+		{
+			//1.Configure both FTSR and RTSR
+
+			EXT1->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
+			//clear the corrosponding RTSR bit
+			EXIT1->RTSR |= (1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+		}
+
+		//2 Configure the GPIO  port selection in SYSCFG_EXTICR
+
+
+		//3. enable the exti interrupt delevery using IMR
+		EXT1->IMR |=1<< pGPIOHandle->GPIO_PinConfig.EXT1->PinNumber;
+
+
 	}
 
 	temp = 0;
