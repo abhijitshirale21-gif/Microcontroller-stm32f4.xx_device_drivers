@@ -73,9 +73,9 @@
 /* Base Addresses of peripherals which on hanging on APB2 Buses
  *  to do complete all the others peripherals
  */
-#define EXIT1_BASEADDR                     (AHB2PERIPH_BASEADDR + 0X3C00)
+#define EXTI_BASEADDR                     (AHB2PERIPH_BASEADDR + 0X3C00)
 #define SPI1_BASEADDR                      (AHB2PERIPH_BASEADDR + 0X3000)
-#define SYCFG_BASEADDR                     (AHB2PERIPH_BASEADDR + 0X3800)
+#define SYSCFG_BASEADDR                     (AHB2PERIPH_BASEADDR + 0X3800)
 #define USART1_BASEADDR                    (AHB2PERIPH_BASEADDR + 0X1000)
 #define USART6_BASEADDR                    (AHB2PERIPH_BASEADDR + 0X1400)
 
@@ -147,7 +147,7 @@ typedef struct
 	__vo uint32_t DCKCFGR2;                           /*TODO,           Addresses Offset: 0X94*/
 
 
-}RCC_RegeDef_t;
+}RCC_RegDef_t;
 
 /*
  * peripheral register defination structure for EXTI
@@ -163,6 +163,23 @@ typedef struct
 	__vo uint32_t PR;                /*! < ToDo,                      Address offset:0x14*/
 }EXTI_RegDef_t;
 
+
+
+/*peripheral register definItion  structure for SYSCFG
+ *
+ */
+ typedef struct
+ {
+	 __vo uint32_t MEMRMP;					  /*! < Give a short Discription ,   Address offset:0x00*/
+	 __vo uint32_t PMC;					  /*! < TODO  Address offset:0x00*/
+	 __vo uint32_t EXTICR[4];				  /*! < GPIO port mode Register,   Address offset:0x00*/
+	 __vo uint32_t RESERVED[2];				  /*! < GPIO port mode Register,   Address offset:0x00*/
+	 __vo uint32_t CFGR;					  /*! < GPIO port mode Register,   Address offset:0x00*/
+
+ }SYSCFG_RegDef_t;
+
+
+
 /* Peripheral Definitions   (Peripheral base addresses typecasted to xxx_Regdef_t)
  *
  */
@@ -176,9 +193,11 @@ typedef struct
 #define GPIOH							((GPIO_RegDef_t*)GPIOH_BASEADDR)
 #define GPIOI							((GPIO_RegDef_t*)GPIOI_BASEADDR)
 
-#define RCC                             ((RCC_RegeDef_t*)RCC_BASEADDR)
+#define RCC                             ((RCC_RegDef_t*)RCC_BASEADDR)
 
-#define EXTI                            ((EXTI_RegeDef_t*)EXTI_BASEADDR)
+#define EXTI                            ((EXTI_RegDef_t*)EXTI_BASEADDR)
+
+#define SYSCFG                          ((SYSCFG_RegDef_t*)SYSCFG_BASEADDR)
 
 
 
@@ -255,6 +274,37 @@ typedef struct
 #define GPIOG_REG_RESET()               do{(RCC->AHB1RSTR |= (1 << 6)); (RCC->AHB1RSTR &=  ~(1 << 6)) ;}while(0)
 #define GPIOH_REG_RESET()               do{(RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &=  ~(1 << 7)) ;}while(0)
 #define GPIOI_REG_RESET()               do{(RCC->AHB1RSTR |= (1 << 8)); (RCC->AHB1RSTR &=  ~(1 << 8)) ;}while(0)
+
+
+
+/* return port code  for given GPIOx base address
+ *
+ * THis macros return a code(between 0 to 7 ) for given GPIO base address(x)
+ *
+ */
+#define GPIO_BASEADDR_TO_CODE(x)     ((x == GPIOA) ? 0 : \
+                                     (x == GPIOB) ? 1 : \
+                                     (x == GPIOC) ? 2 : \
+                                     (x == GPIOD) ? 3 : \
+                                     (x == GPIOE) ? 4 : \
+                                     (x == GPIOF) ? 5 : \
+                                     (x == GPIOG) ? 6 : \
+                                     (x == GPIOH) ? 7 : 0)
+
+ /* IRQ(interrupt Request) Number of STM32F407x MCU
+  * NOTE: update this macros with valid values  according to your MCU
+  * TODO you may  complete this list for other peripherals
+  *
+  */
+#define IRQ_NO_EXTI0      6
+#define IRQ_NO_EXTI1      7
+#define IRQ_NO_EXTI2      8
+#define IRQ_NO_EXTI3      9
+#define IRQ_NO_EXTI4      10
+#define IRQ_NO_EXTI9_5    23
+#define IRQ_NO_EXTI15_10  40
+
+
 
 
 

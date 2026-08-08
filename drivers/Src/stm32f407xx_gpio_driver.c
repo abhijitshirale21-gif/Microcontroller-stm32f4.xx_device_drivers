@@ -143,31 +143,38 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 		if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode ==GPIO_MODE_IT_FT)
 		{
 			//Configure the FTSR
-			EXT1->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
+			EXTI->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
 			//clear the corrosponding RTSR bit
-			EXIT1->RTSR &= ~(1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+			EXTI->RTSR &= ~(1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 
-		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode ==GPIO_MODE_IT_RT_)
+		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT)
 		{
 			//1Configure the RTSR
-			EXT1->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
+			EXTI->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
 			//clear the corrosponding RTSR bit
-			EXIT1->RTSR &= ~(1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+			EXTI->RTSR &= ~(1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 
-		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode ==GPIO_MODE_IT_RFT_)
+		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RFT)
 		{
 			//1.Configure both FTSR and RTSR
 
-			EXT1->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
+			EXTI->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
 			//clear the corrosponding RTSR bit
-			EXIT1->RTSR |= (1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+			EXTI->RTSR |= (1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 		}
 
 		//2 Configure the GPIO  port selection in SYSCFG_EXTICR
 
+	uint8_t temp1 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber / 4;
+	uint8_t temp2 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 4;
+	uint8_t portcode = GPIO_BASEADDR_TO_CODE(pGPIOHandle->pGPIOx);
+	SYSCFG_PCCK_EN();
+	SYSCFG->EXTICR[temp1] = portcode << (temp*4);
+
+
 
 		//3. enable the exti interrupt delevery using IMR
-		EXT1->IMR |=1<< pGPIOHandle->GPIO_PinConfig.EXT1->PinNumber;
+		EXTI->IMR |=1<< pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber;
 
 
 	}
