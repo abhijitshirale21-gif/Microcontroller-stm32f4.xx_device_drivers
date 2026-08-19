@@ -13,6 +13,33 @@
 
 #define __vo volatile
 
+/******************************START: Processor Specific Details*****************************************************************************************
+ *
+ * ARM Cortex_Mx Processor NVIC ISERx Register Address
+ *
+ */
+#define NVIC_ISER0                    ((__vo uint32_t*)0xE000E100 )
+#define NVIC_ISER1                    ((__vo uint32_t*)0xE000E104 )
+#define NVIC_ISER2                    ((__vo uint32_t*)0xE000E108 )
+#define NVIC_ISER3                    ((__vo uint32_t*)0xE000E10C )
+
+
+/* ARM Cortex_Mx Processor NVIC ISCRx Register Address
+ *
+ */
+#define NVIC_ISCR0                    ((__vo uint32_t*)0xE000E180 )
+#define NVIC_ISCR1                    ((__vo uint32_t*)0xE000E184 )
+#define NVIC_ISCR2                    ((__vo uint32_t*)0xE000E188 )
+#define NVIC_ISCR3                    ((__vo uint32_t*)0xE000E11C )
+
+
+//ARM cortex_M processor priority  register address calculation
+#define NVIC_PR_BASE_ADDR            ((__vo uint32_t*)0xE000E400)
+
+//ARM Cortex_M Processor number of priority bit implemented in priority register
+#define NO_PR_BITS_IMPLEMENTED           4
+
+
 /* Based Addresses of FLASH and SRM Memories
  *
  */
@@ -80,7 +107,7 @@
 #define USART6_BASEADDR                    (AHB2PERIPH_BASEADDR + 0X1400)
 
 
-/********************** Peripherals register  Difination Register*******************/
+/********************** Peripherals register  Definition Register*******************/
 
 /*  Note:  Register of Peripherals are specific to MCU
  *  example. number of register of SPI peripherals of Stm32f4xx family on MCU  may be Different (more or less)
@@ -163,6 +190,24 @@ typedef struct
 	__vo uint32_t PR;                /*! < ToDo,                      Address offset:0x14*/
 }EXTI_RegDef_t;
 
+/*
+ * Peripheral Register Defination Structure for SPI
+ */
+typedef struct
+{
+	 __vo uint32_t CR1;
+	 __vo uint32_t CR2;
+	 __vo uint32_t SR;
+	 __vo uint32_t DR;
+	 __vo uint32_t CRCPR;
+	 __vo uint32_t RXCRCR;
+	 __vo uint32_t TXCRCR;
+	 __vo uint32_t I2SCFGR;
+	 __vo uint32_t ISPR;
+}SPI_Reg_Def_t;
+
+
+
 
 
 /*peripheral register definItion  structure for SYSCFG
@@ -194,10 +239,12 @@ typedef struct
 #define GPIOI							((GPIO_RegDef_t*)GPIOI_BASEADDR)
 
 #define RCC                             ((RCC_RegDef_t*)RCC_BASEADDR)
-
 #define EXTI                            ((EXTI_RegDef_t*)EXTI_BASEADDR)
-
 #define SYSCFG                          ((SYSCFG_RegDef_t*)SYSCFG_BASEADDR)
+
+#define SPI1                            ((SPI_RegDef_t*)SPI1_BASE)
+#define SPI2                            ((SPI_RegDef_t*)SPI2_BASE)
+#define SPI3                            ((SPI_RegDef_t*)SPI3_BASE)
 
 
 
@@ -306,7 +353,24 @@ typedef struct
 
 
 
-
+ /* macros for all the possible priority levels
+  */
+#define NVIC_IRQ_PRIO0    0
+#define NVIC_IRQ_PRIO1    1
+#define NVIC_IRQ_PRIO2    2
+#define NVIC_IRQ_PRIO3    3
+#define NVIC_IRQ_PRIO4    4
+#define NVIC_IRQ_PRIO5    5
+#define NVIC_IRQ_PRIO6    6
+#define NVIC_IRQ_PRIO7    7
+#define NVIC_IRQ_PRIO8    8
+#define NVIC_IRQ_PRIO9    9
+#define NVIC_IRQ_PRIO10   10
+#define NVIC_IRQ_PRIO11   11
+#define NVIC_IRQ_PRIO12   12
+#define NVIC_IRQ_PRIO13   13
+#define NVIC_IRQ_PRIO14   14
+#define NVIC_IRQ_PRIO15   15
 
 
 

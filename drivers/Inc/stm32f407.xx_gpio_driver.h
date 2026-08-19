@@ -13,7 +13,6 @@
 typedef struct
 {
 	uint8_t GPIO_PinNumber;           /*!< possible values form @GPIO_PIN_Numbers  */
-
 	uint8_t GPIO_PinMode;            /*!< possible values form @GPIO_PIN_MODES  */
 	uint8_t GPIO_PinSpeed;           /*!< possible values form @GPIO_PIN_SPEED  */
 	uint8_t GPIO_PinPuPdControl;     /*!< possible values form @GPIO_PUPD  */
@@ -104,14 +103,8 @@ typedef struct
  *For more Information About the ApIs Check the Function definitions
  ******************************************************************************************************************************/
 
-
-
-
-
-
 /* peripheral clock Setup*/
 void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx , uint8_t  ENorDI);
-
 
 
 /* Init and DeInit*/
@@ -127,7 +120,8 @@ void GPIO_WriteToOutputport(GPIO_RegDef_t *pGPIOx,uint16_t PinNumber);
 void GPIO_ToggleOutputpin(GPIO_RegDef_t *pGPIOx,uint8_t PinNumber);
 
 //IRQ configuration and ISR handling
-void GPIO_IRGConfig(uint8_t IRQNumber,uint8_t IRQPriority,uint8_t EnorDi);
+void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
 void GPIO_IRQHandling(uint8_t PinNumber);
 
 

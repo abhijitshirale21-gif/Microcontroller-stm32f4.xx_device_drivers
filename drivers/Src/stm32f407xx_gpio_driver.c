@@ -396,10 +396,72 @@ void GPIO_ToggleOutputpin(GPIO_RegDef_t *pGPIOx,uint8_t PinNumber)
  * @return
  * @Note           -
  */
-void GPIO_IRGConfig(uint8_t IRQNumber,uint8_t IRQPriority,uint8_t EnorDi)
+void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 {
+	if(EnorDi == ENABLE)
+	{
+		if(IRQNumber <= 31)
+		{
+			//program of ISER0 Register
+			*NVIC_ISER0 |= (1 << IRQNumber );
+
+		}else if( IRQNumber > 31 && IRQNumber < 64 )
+		{
+			//program ISER1 Register
+			*NVIC_ISER1 |= (1 << IRQNumber % 32 );
+
+		}else if (IRQNumber > 64 && IRQNumber < 95 )
+		{
+			//progeam of iSER2 Register
+			*NVIC_ISER3 |= (1 << IRQNumber % 64 );
+		}
+	}else
+	{
+		if(IRQNumber <= 31)
+				{
+					//program of ISER0 Register(1 to 31)
+					*NVIC_ISCR0 |= (1 << IRQNumber );
+
+				}else if( IRQNumber > 31 && IRQNumber < 64 )
+				{
+					//program ISER1 Register(31 to 64)
+					*NVIC_ISCR1 |= (1 << IRQNumber % 32 );
+
+				}else if (IRQNumber > 64 && IRQNumber < 96 )
+				{
+					//progeam of iSER2 Register //64to 96
+					*NVIC_ISCR3 |= (1 << IRQNumber % 64 );
+				}
+		}
 
 }
+
+
+
+/******************************************************************************************************************************
+ * @fn                  GPIO_IRQPriorityConfig
+{
+ *
+ * @brief               -
+ *
+ * @param[in]           -
+ *
+ * @param[in]           -
+ *
+ * @return
+ * @Note           -
+ */
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
+{
+	// first find out the irq register
+	uint8_t iprx = IRQNumber / 4 ;
+	uint8_t iprx_section = IRQNumber % 4 ;
+
+	uint8_t shift_amount = (8 * iprx_section) + (8 - NO_PR_BITS_IMPLEMENTED);
+	*(NVIC_PR_BASE_ADDR + (iprx * 4)) |= (IRQPriority << shift_amount );
+
+}
+
 
 
 /******************************************************************************************************************************
@@ -415,7 +477,16 @@ void GPIO_IRGConfig(uint8_t IRQNumber,uint8_t IRQPriority,uint8_t EnorDi)
  * @return
  * @Note           -
  */
-void GPIO_IRQHandling(uint8_t PinNumber);
+void GPIO_IRQHandling(uint8_t PinNumber)
+{
+	// clear the exti  pr register  corrosponing to pin number
+	if(EXTI-> PR & (1 << PinNumber))
+	{
+		//clear
+		EXTI-> PR |= (1<< PinNumber);
+
+	}
+}
 
 
 
