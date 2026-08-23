@@ -128,6 +128,10 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 {
 	uint32_t temp=0;//temp register
 
+	//enable the peripheral clock
+	GPIO_PeriClockControl(pGPIOHandle->pGPIOx, ENABLE);
+
+
 	//1.// configure the mode of gpio pin
 
 	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
@@ -144,14 +148,14 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 		{
 			//Configure the FTSR
 			EXTI->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
-			//clear the corrosponding RTSR bit
+			//clear the corresponding RTSR bit
 			EXTI->RTSR &= ~(1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 
 		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT)
 		{
 			//1Configure the RTSR
 			EXTI->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
-			//clear the corrosponding RTSR bit
+			//clear the corresponding RTSR bit
 			EXTI->RTSR &= ~(1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 
 		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RFT)
@@ -159,7 +163,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 			//1.Configure both FTSR and RTSR
 
 			EXTI->FTSR |= (1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber );
-			//clear the corrosponding RTSR bit
+			//clear the corresponding RTSR bit
 			EXTI->RTSR |= (1<<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 		}
 
@@ -173,7 +177,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 
 
 
-		//3. enable the exti interrupt delevery using IMR
+		//3. enable the exti interrupt Deliver using IMR
 		EXTI->IMR |=1<< pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber;
 
 
