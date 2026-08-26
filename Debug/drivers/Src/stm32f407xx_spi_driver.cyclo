@@ -4,4 +4,5 @@
 ../drivers/Src/stm32f407xx_spi_driver.c:138:9:SPI_GetFlagStatus	2
 ../drivers/Src/stm32f407xx_spi_driver.c:169:6:SPI_SendData	4
 ../drivers/Src/stm32f407xx_spi_driver.c:215:6:SPI_PeripheralControl	2
-../drivers/Src/stm32f407xx_spi_driver.c:227:6:SPI_SSIConfig	2
+../drivers/Src/stm32f407xx_spi_driver.c:242:6:SPI_SSIConfig	2
+../drivers/Src/stm32f407xx_spi_driver.c:268:6:SPI_SSOEConfig	2

@@ -73,6 +73,8 @@ int main(void)
 {
 
 	char user_data[] ="Hello World";
+
+
 	// this function is used to initilze the GPIO pins to behave at SPI2 pins
 	SPI2_GPIOInits();
 
@@ -82,6 +84,11 @@ int main(void)
 	//enable the Spi2 peripherals
 	SPI_PeripheralControl(SPI2,ENABLE);
 
+	//first send length information
+	uint8_t data_Len strlen(user_data);
+	SPI_sendData(SPI2,&data_Len,1);
+
+
 	//This make signal internally high and avoid the MODF error
 
 	SPI_SSIConfig(SPI2,ENABLE);
@@ -89,9 +96,12 @@ int main(void)
 	//Disable the SPI peripherals
 	SPI_PeripheralControl(SPI2,DISABLE);
 
-
+	// Lets spi is not busy
+	while SPI_GetFlagStatus(SPI2, BSY_FLAG);
 
 	SPI_SendData(SPI_SendData,(uint8_t*)user_data,strlen(*user_data));
+
+
 
 	while(1)
 

@@ -106,6 +106,7 @@ typedef struct
 /* peripheral clock Setup*/
 void SPI_PeriClockControl(SPI_RegDef_t *pSPIx , uint8_t  ENorDI);
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx , uint8_t  ENorDI);
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx , uint8_t  ENorDI);
 
 /* Init and DeInit*/
 
