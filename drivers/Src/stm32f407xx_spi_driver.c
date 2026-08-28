@@ -195,6 +195,52 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len)
 
 	}
 }
+/******************************************************************************************************************************
+ * @fn                  - SPI_ReciveData
+ *
+ * @brief                -
+ *
+ *
+ * @param[in]         -  base Addresses of the gpio peripheral
+ * @param[in]         - Enable or Disable macros
+ *
+ *
+ *
+ * @return           - None
+ *
+ * @Note           - None
+ *****************************************************************************************************************************/
+
+void SPI_ReciveData(SPI_RegDef_t *pSPIx, uint8_t *pRXNEBuffer, uint32_t Len)
+{
+        while(Len > 0)
+	{
+		//wait until RXNE is SET
+		while(SPI_GetFlagStatus(pSPIx,SPI_RXNE_FLAG) == FLAG_RESET)  ;
+
+		//check the dff bit in CR1
+		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
+		{
+			// 16 bit DFF
+			//load the data into the DR
+			   *((uint16_t *)pRXNEBuffer)= pSPIx-> DR;
+
+			Len--;
+			Len--;
+			 *(uint16_t *)pRXNEBuffer++;
+
+		}else
+		{
+			//8but DFF
+			   *(pRXNEBuffer)= pSPIx-> DR;
+			Len--;
+			pRXNEBuffer++;
+
+		}
+	}
+
+	}
+
 
 /* SPI_SendData*/
 /******************************************************************************************************************************
