@@ -28,8 +28,22 @@ typedef struct
 {
 	SPI_RegDef_t*pSPIx;                /*! THis hold the base addresses of SPI ports which the port belongs >*/
 	SPI_Pin_Config_t SPI_PinConfig;    /*! This hold the SPI pin Configuration */
-
+    uint8_t  *pTxBuffer;             /* to sore the app tx buffer address */
+	uint8_t   *pRxBuffer;              /* to store the app Rx Buffer Address*/
+	uint8_t   Txlen;                  /* to store the TXLEN*/
+	uint8_t   Rxlen;                   /* to store the Rx lem */
+	uint8_t   Txstate;                  // tos tore the tx state
+	uint8_t   Rxstate;                 // to store the rx state
 }SPI_Handle_t;
+
+
+// SPI Application State
+
+#define SPI_READY         	   0
+#define SPI_BUSY_IN_RX         1
+#define SPI_BUSY_IN_TX         2
+
+
 
 
 /*@SPI DeviceMode
@@ -118,9 +132,10 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
  * Data Send ANd Receives
  */
 void SPI_SendData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer,uint32_t Len);
-
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer,uint32_t Len);
 
+uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle,uint8_t *pTxBuffer,uint32_t Len);
+uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle,uint8_t *pTxBuffer,uint32_t Len);
 
 //IRQ configuration and ISR handling
 void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);

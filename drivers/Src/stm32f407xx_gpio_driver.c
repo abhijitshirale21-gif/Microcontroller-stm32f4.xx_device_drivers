@@ -20,8 +20,8 @@
  * @brief                -The Function Enable or Disables Peripheral clock for the given GPIO ports
  *
  *
- * @param[in]         -  base Addresses of the gpio peripheral
- * @param[in]         - Enable or Disable macros
+ * @prime[in]         -  base Addresses of the gpio peripheral
+ * @prime[in]         - Enable or Disable macros
  *
  *
  *
@@ -110,7 +110,7 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx , uint8_t  ENorDI)
 /******************************************************************************************************************************
  * @fn                  - GPIO_Init
  *
- * @brief                -The Function Enable or Disables Peripheral clock for the given GPIO ports
+ * @brief                -T
  *
  *
  * @param[in]         -  base Addresses of the gpio peripheral

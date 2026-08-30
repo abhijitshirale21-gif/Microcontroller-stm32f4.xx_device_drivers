@@ -351,6 +351,10 @@ typedef struct
 #define IRQ_NO_EXTI9_5    23
 #define IRQ_NO_EXTI15_10  40
 
+#define TRQ_NO_SPI1   35  /*SPI Global Interrupt */
+#define IRQ_NO_SPI2   36  /*SPI Global Interrupt */
+#define IRQ_NO_SPI3   51  /*SPI Global Interrupt */
+
 
 
  /* macros for all the possible priority levels
