@@ -9,7 +9,7 @@
 
 
 
-#include "stm32f407.xx_gpio_driver.h"
+#include <stm32f407xx_gpio_driver.h>
 
 
 
@@ -172,7 +172,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 	uint8_t temp1 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber / 4;
 	uint8_t temp2 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 4;
 	uint8_t portcode = GPIO_BASEADDR_TO_CODE(pGPIOHandle->pGPIOx);
-	SYSCFG_PCCK_EN();
+	SYSCFG_PCLK_EN();
 	SYSCFG->EXTICR[temp1] = portcode << (temp*4);
 
 
@@ -402,42 +402,48 @@ void GPIO_ToggleOutputpin(GPIO_RegDef_t *pGPIOx,uint8_t PinNumber)
  */
 void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 {
-	if(EnorDi == ENABLE)
+	void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 	{
-		if(IRQNumber <= 31)
-		{
-			//program of ISER0 Register
-			*NVIC_ISER0 |= (1 << IRQNumber );
-
-		}else if( IRQNumber > 31 && IRQNumber < 64 )
-		{
-			//program ISER1 Register
-			*NVIC_ISER1 |= (1 << IRQNumber % 32 );
-
-		}else if (IRQNumber > 64 && IRQNumber < 95 )
-		{
-			//progeam of iSER2 Register
-			*NVIC_ISER3 |= (1 << IRQNumber % 64 );
-		}
-	}else
-	{
-		if(IRQNumber <= 31)
-				{
-					//program of ISER0 Register(1 to 31)
-					*NVIC_ISCR0 |= (1 << IRQNumber );
-
-				}else if( IRQNumber > 31 && IRQNumber < 64 )
-				{
-					//program ISER1 Register(31 to 64)
-					*NVIC_ISCR1 |= (1 << IRQNumber % 32 );
-
-				}else if (IRQNumber > 64 && IRQNumber < 96 )
-				{
-					//progeam of iSER2 Register //64to 96
-					*NVIC_ISCR3 |= (1 << IRQNumber % 64 );
-				}
-		}
-
+	    if (EnorDi == ENABLE)
+	    {
+	        if (IRQNumber <= 31)
+	        {
+	            *NVIC_ISER0 |= (1U << IRQNumber);
+	        }
+	        else if (IRQNumber <= 63)
+	        {
+	            *NVIC_ISER1 |= (1U << (IRQNumber % 32));
+	        }
+	        else if (IRQNumber <= 95)
+	        {
+	            *NVIC_ISER2 |= (1U << (IRQNumber % 32));
+	        }
+	        else if (IRQNumber <= 127)
+	        {
+	            *NVIC_ISER3 |= (1U << (IRQNumber % 32));
+	        }
+	    }
+	    else
+	    {
+	        /* Disable interrupt */
+	        if (IRQNumber <= 31)
+	        {
+	            *NVIC_ICER0 |= (1U << IRQNumber);
+	        }
+	        else if (IRQNumber <= 63)
+	        {
+	            *NVIC_ICER1 |= (1U << (IRQNumber % 32));
+	        }
+	        else if (IRQNumber <= 95)
+	        {
+	            *NVIC_ICER2 |= (1U << (IRQNumber % 32));
+	        }
+	        else if (IRQNumber <= 127)
+	        {
+	            *NVIC_ICER3 |= (1U << (IRQNumber % 32));
+	        }
+	    }
+	}
 }
 
 
@@ -491,6 +497,3 @@ void GPIO_IRQHandling(uint8_t PinNumber)
 
 	}
 }
-
-
-

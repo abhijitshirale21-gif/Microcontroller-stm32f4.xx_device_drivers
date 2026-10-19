@@ -181,8 +181,8 @@ g_pfnVectors:
   .word	I2C1_ER_IRQHandler           			/* I2C1 error interrupt                                               */
   .word	I2C2_EV_IRQHandler           			/* I2C2 event interrupt                                               */
   .word	I2C2_ER_IRQHandler           			/* I2C2 error interrupt                                               */
-  .word	SPI1_IRQHandler              			/* SPI1 global interrupt                                              */
-  .word	SPI2_IRQHandler              			/* SPI2 global interrupt                                              */
+  .word	I2C1_IRQHandler              			/* I2C1 global interrupt                                              */
+  .word	I2C2_IRQHandler              			/* I2C2 global interrupt                                              */
   .word	USART1_IRQHandler            			/* USART1 global interrupt                                            */
   .word	USART2_IRQHandler            			/* USART2 global interrupt                                            */
   .word	USART3_IRQHandler            			/* USART3 global interrupt                                            */
@@ -197,7 +197,7 @@ g_pfnVectors:
   .word	FSMC_IRQHandler              			/* FSMC global interrupt                                              */
   .word	SDIO_IRQHandler              			/* SDIO global interrupt                                              */
   .word	TIM5_IRQHandler              			/* TIM5 global interrupt                                              */
-  .word	SPI3_IRQHandler              			/* SPI3 global interrupt                                              */
+  .word	I2C3_IRQHandler              			/* I2C3 global interrupt                                              */
   .word	UART4_IRQHandler             			/* UART4 global interrupt                                             */
   .word	UART5_IRQHandler             			/* UART5 global interrupt                                             */
   .word	TIM6_DAC_IRQHandler          			/* TIM6 global interrupt, DAC1 and DAC2 underrun error interrupt      */
@@ -367,11 +367,11 @@ g_pfnVectors:
 	.weak	I2C2_ER_IRQHandler
 	.thumb_set I2C2_ER_IRQHandler,Default_Handler
 
-	.weak	SPI1_IRQHandler
-	.thumb_set SPI1_IRQHandler,Default_Handler
+	.weak	I2C1_IRQHandler
+	.thumb_set I2C1_IRQHandler,Default_Handler
 
-	.weak	SPI2_IRQHandler
-	.thumb_set SPI2_IRQHandler,Default_Handler
+	.weak	I2C2_IRQHandler
+	.thumb_set I2C2_IRQHandler,Default_Handler
 
 	.weak	USART1_IRQHandler
 	.thumb_set USART1_IRQHandler,Default_Handler
@@ -415,8 +415,8 @@ g_pfnVectors:
 	.weak	TIM5_IRQHandler
 	.thumb_set TIM5_IRQHandler,Default_Handler
 
-	.weak	SPI3_IRQHandler
-	.thumb_set SPI3_IRQHandler,Default_Handler
+	.weak	I2C3_IRQHandler
+	.thumb_set I2C3_IRQHandler,Default_Handler
 
 	.weak	UART4_IRQHandler
 	.thumb_set UART4_IRQHandler,Default_Handler

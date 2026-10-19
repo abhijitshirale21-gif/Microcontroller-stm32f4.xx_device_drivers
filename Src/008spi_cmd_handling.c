@@ -15,7 +15,7 @@
 
 //command codes
 #define COMMAND_LED_CTRL               0x50
-#define COMMAND_SENDOR_READ            0x51
+#define COMMAND_SENSOR_READ            0x51
 #define COMMAND_LED_READ               0x052
 #define COMMAND_PRINT                  0x53
 #define COMMAND_ID_READ                0x54
@@ -163,7 +163,7 @@ int main(void)
 		SPI_PeripheralControl(SPI2,ENABLE);
 
 
-		//1 CMD_LED CTRL        <pin no(1)>      < value(1)>
+/******1 CMD_LED CTRL        <pin no(1)>      < value(1)>*************/
 
 		uint8_t commandcode  = COMMAND_LED_CTRL;
 		uint8_t ackbyte;
@@ -200,6 +200,55 @@ int main(void)
 			SPI_SendData(SPI2 ,args ,2);
 
 		}
+/******* END oF the LED Command *********/
+
+		/**** 2. CMD_SENSOR_READ**************** < analog pin number(1) >/*/
+
+		//wait till button is pressed
+				while( ! GPIO_ReadFromInputpin(GPIOA,GPIO_PIN_NO_0) );
+
+				//to avoid button de-bouncing related issues 200ms of delay
+				delay();
+
+			commandcode  = COMMAND_SENSOR_READ;
+
+			//send command
+     		SPI_SendData(SPI2,&commandcode,1);
+
+			//The transmission of 1 byte resulted 1 garbage byte collection in rx buffer of the mastrer flag is set.so do the dummy read and clear the flag.
+
+			// do dummy read to the clear off the RXNE
+			SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+
+			//send some dummy bits (1 byte) to fetch the response from the slave
+			SPI_SendData(SPI2 ,&dummy_write ,1);
+
+			//Read ack byte received
+			SPI_ReceiveData(SPI2, &ackbyte, 1);
+
+		    SPI_VerifyResponse(ackbyte);
+
+			if ( SPI_VerifyResponse(ackbyte))
+			  {
+				// send arguments
+
+				args[0] = ANALOG_PIN0;
+
+
+				//send the arguments
+				SPI_SendData(SPI2 ,args ,2);
+
+		//DO DUMMEY  read to clear the RXNE
+
+		//send some dummy bits (1 byte) to fetch the response from the slave
+			SPI_SendData(SPI2 ,&dummy_write ,1);
+
+			uint8_t analog_read;
+			//Read analaog byte received
+			SPI_ReceiveData(SPI2, &analog_read, 1);
+
+
 
 
 
@@ -220,4 +269,5 @@ int main(void)
 
 	return 0;
 
+	}
 }
